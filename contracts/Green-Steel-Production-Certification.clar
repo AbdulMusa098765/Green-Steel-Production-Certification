@@ -33,6 +33,7 @@
     energy-source: (string-ascii 50),
     carbon-footprint: uint,
     verified: bool,
+    revoked: bool,
     premium-rate: uint,
     owner: principal
   }
@@ -193,6 +194,7 @@
                   energy-source: energy-source,
                   carbon-footprint: carbon-footprint,
                   verified: false,
+                  revoked: false,
                   premium-rate: premium-rate,
                   owner: tx-sender
                 }
@@ -234,6 +236,23 @@
           )
           ERR_NOT_FOUND
         )
+      )
+      ERR_NOT_FOUND
+    )
+  )
+)
+
+(define-public (revoke-certificate (certificate-id uint))
+  (begin
+    (asserts! (is-eq tx-sender CONTRACT_OWNER) ERR_UNAUTHORIZED)
+    (match (map-get? certificates { certificate-id: certificate-id })
+      cert-data
+      (begin
+        (map-set certificates
+          { certificate-id: certificate-id }
+          (merge cert-data { revoked: true })
+        )
+        (ok true)
       )
       ERR_NOT_FOUND
     )
@@ -390,6 +409,7 @@
     cert-data
     (and
       (get verified cert-data)
+      (not (get revoked cert-data))
       (<= (get carbon-footprint cert-data) u150)
       (match (map-get? energy-sources { source-id: (get energy-source cert-data) })
         energy-data

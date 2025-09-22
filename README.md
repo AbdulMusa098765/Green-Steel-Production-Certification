@@ -1,5 +1,3 @@
-# 🌱 Green Steel Production Certification
-
 A blockchain-based certification system for sustainable steel production with IoT integration and supply chain traceability.
 
 ## 🎯 Features
@@ -11,6 +9,7 @@ A blockchain-based certification system for sustainable steel production with Io
 - 🔗 **Supply Chain Traceability**: Track steel from production to end consumer
 - 💰 **Premium Tokens**: Reward green steel buyers with tokenized premiums
 - ✅ **Verification System**: Multi-layer verification for producers, certificates, and supply chain steps
+- 🚫 **Certificate Revocation**: Admin ability to revoke invalid certificates for enhanced integrity
 
 ## 🚀 Quick Start
 
@@ -56,6 +55,7 @@ A blockchain-based certification system for sustainable steel production with Io
 - `transfer-certificate(certificate-id, new-owner)` - Transfer certificate ownership
 - `get-certificate(certificate-id)` - View certificate details
 - `is-green-certified(certificate-id)` - Check if steel meets green standards
+- `revoke-certificate(certificate-id)` - Revoke certificate (admin only)
 
 ### Supply Chain
 - `add-supply-chain-step(certificate-id, step, entity, location)` - Add supply chain step
@@ -73,7 +73,7 @@ Steel qualifies as "green certified" when:
 - ✅ Carbon footprint ≤ 150 kg CO2/ton
 - ✅ Energy source carbon intensity ≤ 100 kg CO2/MWh
 - ✅ Producer is verified
-- ✅ Certificate is verified by admin
+- ✅ Certificate is verified by admin and not revoked
 
 ## 💎 Premium Calculation
 
@@ -120,3 +120,4 @@ This system enables:
 - 📱 Real-time monitoring through IoT integration
 - 🏆 Market premiums for green steel producers
 - 🔍 Full supply chain transparency
+
