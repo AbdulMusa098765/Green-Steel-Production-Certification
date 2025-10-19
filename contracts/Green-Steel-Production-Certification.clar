@@ -75,6 +75,15 @@
   }
 )
 
+(define-map certificate-listings
+  { certificate-id: uint }
+  {
+    seller: principal,
+    price: uint,
+    listed: bool
+  }
+)
+
 (define-public (register-producer (name (string-ascii 100)) (location (string-ascii 100)))
   (let ((producer-id (var-get next-producer-id)))
     (asserts! (is-none (map-get? producers { producer-id: producer-id })) ERR_ALREADY_EXISTS)
@@ -453,4 +462,50 @@
     )
     ERR_NOT_FOUND
   )
+)
+
+(define-public (list-certificate (certificate-id uint) (price uint))
+  (match (map-get? certificates { certificate-id: certificate-id })
+    cert-data
+    (begin
+      (asserts! (is-eq (get owner cert-data) tx-sender) ERR_UNAUTHORIZED)
+      (asserts! (get verified cert-data) ERR_INVALID_CERTIFICATE)
+      (map-set certificate-listings
+        { certificate-id: certificate-id }
+        {
+          seller: tx-sender,
+          price: price,
+          listed: true
+        }
+      )
+      (ok true)
+    )
+    ERR_NOT_FOUND
+  )
+)
+
+(define-public (buy-certificate (certificate-id uint))
+  (match (map-get? certificate-listings { certificate-id: certificate-id })
+    listing-data
+    (begin
+      (asserts! (get listed listing-data) ERR_NOT_FOUND)
+      (let ((price (get price listing-data)))
+        (try! (stx-transfer? price tx-sender (get seller listing-data)))
+        (map-set certificates
+          { certificate-id: certificate-id }
+          (merge (unwrap-panic (map-get? certificates { certificate-id: certificate-id })) { owner: tx-sender })
+        )
+        (map-set certificate-listings
+          { certificate-id: certificate-id }
+          (merge listing-data { listed: false })
+        )
+        (ok true)
+      )
+    )
+    ERR_NOT_FOUND
+  )
+)
+
+(define-read-only (get-certificate-listing (certificate-id uint))
+  (map-get? certificate-listings { certificate-id: certificate-id })
 )

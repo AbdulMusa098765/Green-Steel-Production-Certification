@@ -67,6 +67,11 @@ A blockchain-based certification system for sustainable steel production with Io
 - `withdraw-premium(amount)` - Withdraw premium tokens
 - `get-premium-balance(owner)` - Check premium balance
 
+### Certificate Marketplace
+- `list-certificate(certificate-id, price)` - List a verified certificate for sale at specified STX price
+- `buy-certificate(certificate-id)` - Purchase a listed certificate and transfer ownership
+- `get-certificate-listing(certificate-id)` - View marketplace listing details
+
 ## 🌿 Green Certification Criteria
 
 Steel qualifies as "green certified" when:
@@ -112,7 +117,28 @@ clarinet deploy
 - Supply chain step verification
 - Balance checks for premium withdrawals
 
-## 🌍 Environmental Impact
+## 🏪 Certificate Marketplace
+
+- **List Certificate**: Allow certificate owners to list their verified green steel certificates for sale on the blockchain marketplace
+- **Buy Certificate**: Enable buyers to purchase listed certificates directly through the contract with automatic STX transfers
+- **View Listings**: Check current marketplace listings and pricing for available certificates
+
+### List a Certificate for Sale
+```clarity
+(contract-call? .green-steel-certification list-certificate u1 u5000000)
+```
+
+### Purchase a Listed Certificate
+```clarity
+(contract-call? .green-steel-certification buy-certificate u1)
+```
+
+### Check Certificate Listing Details
+```clarity
+(contract-call? .green-steel-certification get-certificate-listing u1)
+```
+
+## 🌍 Enhanced Environmental Impact
 
 This system enables:
 - 📈 Transparent carbon footprint tracking
@@ -120,4 +146,5 @@ This system enables:
 - 📱 Real-time monitoring through IoT integration
 - 🏆 Market premiums for green steel producers
 - 🔍 Full supply chain transparency
+- 🏪 Liquid marketplace for green certificates, promoting wider adoption and trading of sustainable steel assets
 
