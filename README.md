@@ -10,6 +10,7 @@ A blockchain-based certification system for sustainable steel production with Io
 - 💰 **Premium Tokens**: Reward green steel buyers with tokenized premiums
 - ✅ **Verification System**: Multi-layer verification for producers, certificates, and supply chain steps
 - 🚫 **Certificate Revocation**: Admin ability to revoke invalid certificates for enhanced integrity
+- 🛡️ **Dispute Resolution**: Allow certificate owners to file disputes and admins to resolve them for enhanced trust
 
 ## 🚀 Quick Start
 
@@ -70,6 +71,10 @@ A blockchain-based certification system for sustainable steel production with Io
 ### Certificate Marketplace
 - `list-certificate(certificate-id, price)` - List a verified certificate for sale at specified STX price
 - `buy-certificate(certificate-id)` - Purchase a listed certificate and transfer ownership
+### Dispute Resolution
+- `file-dispute(certificate-id, reason)` - File a dispute against a certificate
+- `resolve-dispute(certificate-id)` - Resolve a dispute (admin only)
+- `get-dispute(certificate-id)` - View dispute details
 - `get-certificate-listing(certificate-id)` - View marketplace listing details
 
 ## 🌿 Green Certification Criteria
@@ -111,6 +116,7 @@ clarinet deploy
 
 ## 🔐 Security Features
 
+- Dispute resolution mechanism for certificate integrity
 - Role-based access control (admin vs producers vs buyers)
 - Certificate verification requirements
 - IoT sensor validation
@@ -140,6 +146,7 @@ clarinet deploy
 
 ## 🌍 Enhanced Environmental Impact
 
+- 🛡️ Dispute resolution system for handling certificate disputes and maintaining trust
 This system enables:
 - 📈 Transparent carbon footprint tracking
 - 🔄 Incentivized sustainable production methods
@@ -148,3 +155,24 @@ This system enables:
 - 🔍 Full supply chain transparency
 - 🏪 Liquid marketplace for green certificates, promoting wider adoption and trading of sustainable steel assets
 
+
+## 🛡️ Dispute Resolution System
+
+- **File Dispute**: Certificate owners can file disputes against their certificates if they suspect inaccuracies or issues
+- **Resolve Dispute**: Admin can resolve disputes to maintain system integrity
+- **View Dispute**: Check dispute details for transparency
+
+### File a Dispute on a Certificate
+```clarity
+(contract-call? .green-steel-certification file-dispute u1 "Incorrect carbon footprint data")
+```
+
+### Resolve a Dispute (Admin only)
+```clarity
+(contract-call? .green-steel-certification resolve-dispute u1)
+```
+
+### Check Dispute Details
+```clarity
+(contract-call? .green-steel-certification get-dispute u1)
+```

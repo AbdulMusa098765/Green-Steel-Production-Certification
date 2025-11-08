@@ -84,6 +84,15 @@
   }
 )
 
+(define-map disputes
+  { certificate-id: uint }
+  {
+    reason: (string-ascii 200),
+    filed-by: principal,
+    resolved: bool
+  }
+)
+
 (define-public (register-producer (name (string-ascii 100)) (location (string-ascii 100)))
   (let ((producer-id (var-get next-producer-id)))
     (asserts! (is-none (map-get? producers { producer-id: producer-id })) ERR_ALREADY_EXISTS)
@@ -508,4 +517,45 @@
 
 (define-read-only (get-certificate-listing (certificate-id uint))
   (map-get? certificate-listings { certificate-id: certificate-id })
+)
+
+(define-public (file-dispute (certificate-id uint) (reason (string-ascii 200)))
+  (match (map-get? certificates { certificate-id: certificate-id })
+    cert-data
+    (begin
+      (asserts! (is-eq (get owner cert-data) tx-sender) ERR_UNAUTHORIZED)
+      (asserts! (is-none (map-get? disputes { certificate-id: certificate-id })) ERR_ALREADY_EXISTS)
+      (map-set disputes
+        { certificate-id: certificate-id }
+        {
+          reason: reason,
+          filed-by: tx-sender,
+          resolved: false
+        }
+      )
+      (ok true)
+    )
+    ERR_NOT_FOUND
+  )
+)
+
+(define-public (resolve-dispute (certificate-id uint))
+  (begin
+    (asserts! (is-eq tx-sender CONTRACT_OWNER) ERR_UNAUTHORIZED)
+    (match (map-get? disputes { certificate-id: certificate-id })
+      dispute-data
+      (begin
+        (map-set disputes
+          { certificate-id: certificate-id }
+          (merge dispute-data { resolved: true })
+        )
+        (ok true)
+      )
+      ERR_NOT_FOUND
+    )
+  )
+)
+
+(define-read-only (get-dispute (certificate-id uint))
+  (map-get? disputes { certificate-id: certificate-id })
 )
