@@ -11,6 +11,7 @@ A blockchain-based certification system for sustainable steel production with Io
 - ✅ **Verification System**: Multi-layer verification for producers, certificates, and supply chain steps
 - 🚫 **Certificate Revocation**: Admin ability to revoke invalid certificates for enhanced integrity
 - 🛡️ **Dispute Resolution**: Allow certificate owners to file disputes and admins to resolve them for enhanced trust
+- 🔒 **Producer Staking System**: Enable producers to stake STX for reputation boosts and enhanced trust signals
 
 ## 🚀 Quick Start
 

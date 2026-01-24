@@ -93,6 +93,14 @@
   }
 )
 
+(define-map producer-stakes
+  { producer-id: uint }
+  {
+    staked-amount: uint,
+    stake-time: uint
+  }
+)
+
 (define-public (register-producer (name (string-ascii 100)) (location (string-ascii 100)))
   (let ((producer-id (var-get next-producer-id)))
     (asserts! (is-none (map-get? producers { producer-id: producer-id })) ERR_ALREADY_EXISTS)
